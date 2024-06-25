@@ -77,6 +77,9 @@ The default credentials 'minio:Ch@ngeM3', we recommend that you change these val
 As credenciais predefinidas 'minio:Ch@ngeM3', recomendamos que você altere esses valores com as variáveis de ambiente 'MINIO_ROOT_USER' e 'MINIO_ROOT_PASSWORD'.
   developer: minio
   icon: https://cdn.jsdelivr.net/gh/matribeiro15/Publiso-CasaOS@main/Apps/minio/minio-logo.png
+  screenshot_link:
+    - https://cdn.jsdelivr.net/gh/matribeiro15/Publiso-CasaOS@main/Apps/minio/screenshot-1.png
+    - https://cdn.jsdelivr.net/gh/matribeiro15/Publiso-CasaOS@main/Apps/minio/screenshot-2.png
   is_uncontrolled: false
   main: app
   port_map: "9001"
