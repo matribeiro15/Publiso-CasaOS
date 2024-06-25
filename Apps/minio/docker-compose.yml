@@ -88,7 +88,6 @@ As credenciais predefinidas 'minio:Ch@ngeM3', recomendamos que você altere esse
   thumbnail: ""
   title:
     en_us: Minio
-    pt_br: Minio
     custom: ""
   hostname: ""
   index: /
