@@ -1,0 +1,88 @@
+name: minio
+services:
+  app:
+    command:
+      - server
+      - --console-address
+      - :9001
+      - /data
+    container_name: minio
+    environment:
+      - MINIO_ROOT_PASSWORD=Ch@ngeM3
+      - MINIO_ROOT_USER=minio
+    image: minio/minio:latest
+    labels:
+      icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/png/minio.png
+    ports:
+      - mode: ingress
+        target: 9000
+        published: "9010"
+        protocol: tcp
+      - mode: ingress
+        target: 9001
+        published: "9011"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /DATA/AppData/big-bear-minio
+        target: /data
+        bind:
+          create_host_path: true
+    x-casaos:
+      envs:
+        - container: MINIO_ROOT_USER
+          description:
+            en_us: Minio Console User
+        - container: MINIO_ROOT_PASSWORD
+          description:
+            en_us: Minio Console Password
+      ports:
+        - container: "9002"
+          description:
+            en_us: "Container Port: 9002"
+      volumes:
+        - container: /data
+          description:
+            en_us: "Container Path: /data"
+    devices: []
+    cap_add: []
+    networks:
+      - default
+    privileged: false
+    hostname: minio
+    cpu_shares: 90
+    deploy:
+      resources:
+        limits:
+          memory: 3792M
+networks:
+  default:
+    name: big-bear-minio_default
+x-casaos:
+  architectures:
+    - amd64
+    - arm
+    - arm64
+  author: BigBearCommunity
+  category: BigBearCasaOS
+  description:
+    en_us: A distributed object storage server built for cloud applications and
+      devops. Default credentials 'minioadmin:minioadmin', we recommend that you
+      change these values with 'MINIO_ROOT_USER' and 'MINIO_ROOT_PASSWORD'
+      environment variables.
+  developer: minio
+  icon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/png/minio.png
+  is_uncontrolled: false
+  main: app
+  port_map: "9011"
+  scheme: http
+  store_app_id: big-bear-minio
+  tagline:
+    en_us: An open-source S3 alternative
+  thumbnail: ""
+  title:
+    en_us: Minio
+    custom: ""
+  hostname: ""
+  index: /
