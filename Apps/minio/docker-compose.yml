@@ -1,64 +1,70 @@
 name: minio
 services:
-  app:
-    image: minio/minio:latest
+  minio:
+    cpu_shares: 90
+    command:
+      - server
+      - --console-address
+      - :9001
+      - /data
     container_name: minio
-    volumes:
-      - /DATA/AppData/Minio:/data
-    ports:
-      - "9000:9000"
-      - "9001:9001"
+    deploy:
+      resources:
+        reservations:
+          memory: "512M"          
     environment:
-      MINIO_ROOT_PASSWORD: 'Ch@ngeM3'
-      MINIO_ROOT_USER: 'minio'
+      - MINIO_ROOT_PASSWORD=Ch@ngeM3
+      - MINIO_ROOT_USER=minio
+    hostname: minio
+    image: minio/minio:latest
+    labels:
+      icon: https://cdn.jsdelivr.net/gh/matribeiro15/Publiso-CasaOS@main/Apps/minio/minio-logo.png
+    ports:
+      - mode: ingress
+        target: 9000
+        published: "9000"
+        protocol: tcp
+      - mode: ingress
+        target: 9001
+        published: "9001"
+        protocol: tcp
     restart: unless-stopped
-    command: server --console-address ":9001" /data
-    x-casaos:
-      envs:
-        - container: MINIO_ROOT_USER
-          description:
-            en_us: 'Minio Console User'
-            pt_br: 'Usuario da Console Minio'
-        - container: MINIO_ROOT_PASSWORD
-          description:
-            en_us: 'Minio Console Password'
-            pt_br: 'Senha da Console Minio'
-      volumes:
-        - container: /data
-          description:
-            en_us: "Container Path: /data"
-            pt_br: "Caminho do Container: /data"
-      ports:
-        - container: "9002"
-          description:
-            en_us: "Container Port: 9002"
-            pt_br: "Porta do Container: 9002"
-
-# CasaOS specific configuration
+    volumes:
+      - type: bind
+        source: /DATA/AppData/Minio
+        target: /data
+        bind:
+          create_host_path: true
+    devices: []
+    cap_add: []
+    network_mode: bridge
+    privileged: false
 x-casaos:
-  architectures: # Supported CPU architectures
+  architectures:
     - amd64
     - arm
     - arm64
-  main: app
-  description:
-    en_us: MinIO is an object storage solution that provides an API compatible with Amazon Web Services S3 and supports all of S3's core functionalities. MinIO is designed to be deployed anywhere - public or private cloud, baremetal infrastructure, orchestrated environments and edge infrastructure.
-The default credentials 'minio:Ch@ngeM3', we recommend that you change these values with the environment variables 'MINIO_ROOT_USER' and 'MINIO_ROOT_PASSWORD'.
-    pt_br: O MinIO é uma solução de armazenamento de objectos que fornece uma API compatível com o Amazon Web Services S3 e suporta todas as funcionalidades principais do S3. O MinIO foi criado para ser implantado em qualquer lugar - nuvem pública ou privada, infraestrutura baremetal, ambientes orquestrados e infraestrutura de borda.
-As credenciais predefinidas 'minio:Ch@ngeM3', recomendamos que você altere esses valores com as variáveis de ambiente 'MINIO_ROOT_USER' e 'MINIO_ROOT_PASSWORD'.
-  tagline:
-    en_us: An open-source S3 alternative
-    pt_br: Uma alternativa S3 de código aberto
-  developer: "minio"
   author: Publiso
+  category: Backup
+  description:
+    en_us: MinIO is an object storage solution that provides an API compatible with Amazon Web Services S3 and supports all of S3's core functionalities. MinIO is designed to be deployed anywhere - public or private cloud, baremetal infrastructure, orchestrated environments and edge infrastructure. The default credentials 'minio:Ch@ngeM3', we recommend that you change these values with the environment variables 'MINIO_ROOT_USER' and 'MINIO_ROOT_PASSWORD'.
+    pt_br: MinIO é uma solução de armazenamento de objectos que fornece uma API compatível com o Amazon Web Services S3 e suporta todas as funcionalidades principais do S3. O MinIO foi criado para ser implantado em qualquer lugar - nuvem pública ou privada, infraestrutura baremetal, ambientes orquestrados e infraestrutura de borda. As credenciais predefinidas 'minio:Ch@ngeM3', recomendamos que você altere esses valores com as variáveis de ambiente 'MINIO_ROOT_USER' e 'MINIO_ROOT_PASSWORD'.
+  developer: minio
+  hostname: ""
   icon: https://cdn.jsdelivr.net/gh/matribeiro15/Publiso-CasaOS@main/Apps/minio/minio-logo.png
   screenshot_link:
     - https://cdn.jsdelivr.net/gh/matribeiro15/Publiso-CasaOS@main/Apps/minio/screenshot-1.png
     - https://cdn.jsdelivr.net/gh/matribeiro15/Publiso-CasaOS@main/Apps/minio/screenshot-2.png
-  thumbnail: ""
-  title:
-    en_us: Minio
-    pt_br: Minio
-  category: Backup
+  index: /
+  is_uncontrolled: false
+  main: app
   port_map: "9001"
   scheme: http
+  store_app_id: minio
+  tagline:
+    en_us: An open-source S3 alternative
+    pt_br: Uma alternativa S3 de código aberto.
+  thumbnail: ""
+  title:
+    custom: ""
+    en_us: Minio
